@@ -2,8 +2,6 @@
 # Luke oglesbee
 # Created 11/16/14
 
-from sys import stdout
-
 class Cell:
   def __init__(self, content):
     self.north = False
@@ -24,7 +22,6 @@ class Maze:
       for y in range(width):
         cellRow.append(Cell(0))
       self.cell.append(cellRow)
-
   def __str__(self):
     out  = "\n" + " "*4 + "MAZE -- width: %s, heigth: %s\n\n" % (self.width, self.height)
     out += " "*4
