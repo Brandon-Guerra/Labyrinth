@@ -38,6 +38,5 @@ class MazeApp(App):
         game = MazeGame()
         return game
 
-
 if __name__ == '__main__':
     MazeApp().run()
