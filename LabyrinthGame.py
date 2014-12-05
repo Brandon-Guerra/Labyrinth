@@ -6,7 +6,7 @@ from LevelGenerator import LevelGenerator
 pygame.init()
 WINDOWWIDTH, WINDOWHIEGHT = (1100,750)
 screen = pygame.display.set_mode((WINDOWWIDTH,WINDOWHIEGHT))
-FPSClock = pygame.time.Clock()
+clock = pygame.time.Clock()
 
 def run():
   stateHandler = StateHandler()
@@ -24,7 +24,7 @@ class StateHandler:
     self.mode = 'menu'
     self.menu = StartMenu()
     self.levelGenerator = LevelGenerator()
-    FPSClock.tick(60)
+    clock.tick(60)
 
   def update(self):
     self.input.get() #check for quit
@@ -75,8 +75,7 @@ class GameHandler:
     screen.fill((200,200,200))
     self.black = (0, 0, 0)
     self.thickness = 4
-    self.width = 34
-    self.height = 34
+    self.length = 34
     self.none = 0
     self.offset = 30
     self.constant = 34
@@ -113,9 +112,9 @@ class GameHandler:
     Draw wall for a cell
     """
     if isHorizontal:
-      pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.width, self.none), self.thickness)
+      pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.length, self.none), self.thickness)
     else:
-      pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.none, self.height), self.thickness)
+      pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.none, self.length), self.thickness)
 
 
 if __name__ == "__main__":
