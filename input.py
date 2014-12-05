@@ -8,6 +8,8 @@ class Input:
     self.justPressedKeys = []
   
   def get(self):
+    self.unpressedKeys = []
+    self.justPressedKeys = []
     for event in pygame.event.get():
       if event.type == KEYDOWN:
         if event.key not in self.pressedKeys:
