@@ -70,7 +70,7 @@ class StartMenu:
 class GameHandler:
   def __init__(self, maze):
     screen.fill((200,200,200))
-    #draw maze
+    
 
   def update(self, userInput):
     if K_0 in userInput.unpressedKeys:
