@@ -1,4 +1,5 @@
 import pygame
+import math
 from pygame.locals import *
 from input import Input
 from LevelGenerator import LevelGenerator
@@ -104,16 +105,13 @@ class GameHandler:
       self.movePlayer(0,-2)
     elif K_s in userInput.unpressedKeys or K_s in userInput.pressedKeys:
       self.movePlayer(0,2)
+    if K_EQUALS in userInput.unpressedKeys or K_EQUALS in userInput.pressedKeys:
+      self.player.viewRadius += 2
+    elif K_MINUS in userInput.unpressedKeys or K_MINUS in userInput.pressedKeys:
+      self.player.viewRadius -= 2
     self.drawMaze()
     return 'continue'
   
-  def drawMaze(self):
-    screen.fill((200,200,200))
-    for wall in self.walls:
-      pygame.draw.rect(screen, self.black, wall, self.thickness)
-    self.drawPlayer()
-    self.drawItem(self.finish)
-
   def setMaze(self, maze):
     """
     View a maze
@@ -139,10 +137,48 @@ class GameHandler:
     self.drawPlayer()
     self.drawItem(maze.finish)
 
+  def drawMaze(self):
+    screen.fill((200,200,200))
+    for wall in self.walls:
+      pygame.draw.rect(screen, self.black, wall, self.thickness)
+    self.drawItem(self.finish)
+    self.drawPlayer()
+    self.drawDark(20)
+
   def drawPlayer(self):
     if self.player:
       pygame.draw.rect(screen, self.black, self.player.rect)
-      pygame.draw.circle(screen, self.black, (self.player.rect.x, self.player.rect.y), 1000, 800)
+      # pygame.draw.circle(screen, self.black, (self.player.rect.x, self.player.rect.y), 1000, 800)
+
+  def drawDark(self,n):
+    center = []
+    center.append(self.player.rect.x+self.player.rect.width/2)
+    center.append(self.player.rect.y+self.player.rect.height/2)
+    left = center[0] - self.player.viewRadius
+    right = center[0] + self.player.viewRadius
+    top = center[1] - self.player.viewRadius
+    bottom = center[1] + self.player.viewRadius
+
+    pygame.draw.rect(screen, self.black, Rect(0,0,left,WINDOWHIEGHT))
+    pygame.draw.rect(screen, self.black, Rect(right,0,WINDOWWIDTH-right,WINDOWHIEGHT))
+    pygame.draw.rect(screen, self.black, Rect(left,0,right - left, top))
+    pygame.draw.rect(screen, self.black, Rect(left,bottom,right-left,WINDOWHIEGHT-bottom))
+
+    points = range(n)
+    points = map(lambda pt: pt/(len(points) - 1.0),points)
+    points = map(lambda pt: pt*math.pi *2/4, points)
+    points = map(lambda pt: (math.cos(pt), math.sin(pt)),points)
+    points = map(lambda pt: (self.player.viewRadius *pt[0], self.player.viewRadius *pt[1]),points)
+    for qudrant in ((1,1),(-1,1),(-1,-1),(1,-1)):
+      x_flip = qudrant[0]
+      y_flip = qudrant[1]
+      edge = center[1] + self.player.viewRadius * y_flip
+      for i in xrange(len(points) - 1):
+        A = (points[i][0] * x_flip + center[0], points[i][1] * y_flip + center[1])
+        B = (points[i+1][0] * x_flip + center[0], points[i+1][1] * y_flip + center[1])
+        A_edge = (A[0], edge)
+        B_edge = (B[0], edge)
+        pygame.draw.polygon(screen,self.black, (A,B,B_edge,A_edge))
 
   def movePlayer(self, dx, dy):
     if dx != 0:
@@ -182,7 +218,7 @@ class GameHandler:
 
 class Player:
   def __init__(self,coord):
-    self.viewRadius = 50
+    self.viewRadius = 100
     self.oilLevel = 100
     x,y = coord
     self.rect = pygame.Rect(x,y,20,20)
