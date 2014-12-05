@@ -142,6 +142,7 @@ class GameHandler:
   def drawPlayer(self):
     if self.player:
       pygame.draw.rect(screen, self.black, self.player.rect)
+      pygame.draw.circle(screen, self.black, (self.player.rect.x, self.player.rect.y), 1000, 800)
 
   def movePlayer(self, dx, dy):
     if dx != 0:
