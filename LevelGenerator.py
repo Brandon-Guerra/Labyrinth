@@ -51,9 +51,9 @@ class LevelGenerator:
     walls = []
     # Set start and end index
     start = (random.randint(0,self.width-1),random.randint(0,self.height-1))
-    end = (random.randint(0,self.width-1),random.randint(0,self.height-1))
-    maze.setContent("start",start)
-    maze.setContent("end", end)
+    finish = (random.randint(0,self.width-1),random.randint(0,self.height-1))
+    maze.setStart(start)
+    maze.setFinish(finish)
     visitedCells.append(start)
     walls.extend(maze.getWalls(start))
     while walls:

@@ -26,6 +26,8 @@ class Maze:
     """
     self.width = width
     self.height = height
+    self.start = None
+    self.finish = None
     self.cell = {}
     for x in range(width):
       for y in range(height):
@@ -53,6 +55,16 @@ class Maze:
     x = coord[0]
     y = coord[1]
     self.cell[x,y].content = content
+
+  def setStart(self, coord):
+    self.start = coord
+    x,y = coord
+    self.cell[x,y].content = "start"
+
+  def setFinish(self, coord):
+    self.finish = coord
+    x,y = coord
+    self.cell[x,y].content = "finish"
 
   def __str__(self):
     """
