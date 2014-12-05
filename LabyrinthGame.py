@@ -39,8 +39,8 @@ class StateHandler:
     if self.mode == 'game':
       result = self.gameHandler.update(self.input)
       if result == 'game over':
-        self.mode = 'menu'
-        self.menu = StartMenu()
+        program.quit()
+        sys.exit()
       elif result == 'next level':
         self.gameHandler.setMaze(self.levelGenerator.nextLevel())
         self.gameHandler.drawMaze()
@@ -110,7 +110,8 @@ class GameHandler:
     elif K_MINUS in userInput.unpressedKeys or K_MINUS in userInput.pressedKeys:
       self.player.decreaseRadius()
     self.player.diminishOil()
-    print self.player.oilLevel
+    if self.player.oilLevel == 0:
+      return 'game over'
     if self.player.rect.colliderect(self.finish):
       self.player.addOil()
       return 'next level'
@@ -261,7 +262,8 @@ class Player:
     self.oilLevel = min(200,self.oilLevel+50)
 
   def diminishOil(self):
-    self.oilLevel = max(0,self.oilLevel - self.oilLevel*math.pow(self.viewRadius,1.5)*0.00000015)
+    self.oilLevel = max(0,self.oilLevel - math.pow(self.viewRadius,1.5)*0.00001)
+    print self.oilLevel
 
   def increaseRadius(self):
     self.viewRadius = min(300,self.viewRadius+2)
