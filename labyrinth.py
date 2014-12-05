@@ -12,33 +12,52 @@ def main():
 	#initializing constants for drawing maze
 	black = (0, 0, 0)
 	thickness = 4
-	length = 30
 	width = 30
+	height = 30
 	none = 0
+	offset = 30
+	constant = 34
 
 	# Fill background
 	background = pygame.Surface(screen.get_size())
 	background = background.convert()
 	background.fill((250, 250, 250))
 
-	#Draw rectangle
-	pygame.draw.rect(background, black, (50, 50, 100, 0), thickness)
-	pygame.draw.rect(background, black, (50, 50, 0, 100), thickness)
-
 	# Blit everything to the screen
 	screen.blit(background, (0, 0))
 	pygame.display.flip()
 
+	def drawMaze(maze):
+		"""
+	  View a maze
+	  """
+	  # initialize north and west
+		for i in maze.width:
+			if maze.cell[i][0].north:
+				drawWall(True,i,0)
+		for i in maze.height:
+			if maze.cell[0][j].west:
+				drawWall(False,0,j)
+	  # loop through to draw the rest of the walls
+		for i in maze.width:
+			for j in maze.height:
+				if maze.cell[i][j].south:
+					drawWall(True,i,j+1)
+				if maze.cell[i][j].east:
+					drawWall(False,i+1,j)
+
+	def drawWall(isHorizontal, x, y):
+		"""
+		Draw wall for a cell
+		"""
+		if isHorizantal:
+			pygame.draw.rect(background, black, (x*constant + offset, y*constant + offset, width, none), thickness)
+		else:
+			pygame.draw.rect(background, black, (x*constant + offset, y*constant + offset, width, none), thickness)
+
 	l = LevelGenerator()
 	m = l.nextLevel()
-
-	drawCell(m.cell[0][0])
-
-	def drawCell(cell):
-		if cell.north == True:
-			pygame.draw.rect(background, black, (length, none, 30, 60))
-		if cell.south == True:
-
+	drawMaze(m)
 
 	# Event loop
 	while 1:
@@ -48,6 +67,5 @@ def main():
 
 		screen.blit(background, (0, 0))
 		pygame.display.flip()
-
 
 if __name__ == '__main__': main()
