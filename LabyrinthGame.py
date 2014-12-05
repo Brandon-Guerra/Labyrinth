@@ -39,6 +39,9 @@ class StateHandler:
       if result == 'game over':
         self.mode = 'menu'
         self.menu = StartMenu()
+      elif result == 'next level':
+        self.gameHandler.drawMaze(self.levelGenerator.nextLevel())
+
     pygame.display.update()
 
 
@@ -80,10 +83,10 @@ class GameHandler:
     self.none = 0
     self.offset = 30
     self.constant = 34
+    self.player = Player()
     self.drawMaze(maze)
     
   def update(self, userInput):
-
     if K_0 in userInput.unpressedKeys:
       return 'game over'
     if K_1 in userInput.unpressedKeys:
@@ -93,6 +96,7 @@ class GameHandler:
     """
     View a maze
     """
+    screen.fill((200,200,200))
     # initialize north and west
     for i in range(maze.width):
       if maze.cell[i,0].north:
@@ -107,6 +111,25 @@ class GameHandler:
           self.drawWall(True,i,j+1)
         if maze.cell[i,j].east:
           self.drawWall(False,i+1,j)
+    x = maze.start[0]*self.constant+self.offset+self.offset/2+3
+    y = maze.start[1]*self.constant+self.offset+self.offset/2+3
+    self.player.setCoord((x,y))
+    self.drawPlayer()
+    self.drawItem(maze.finish)
+
+  def drawItem(self, coord, type=None):
+    x,y = coord
+    xAdjust = x*self.constant+self.offset+self.offset/2+3
+    yAdjust = y*self.constant+self.offset+self.offset/2+3
+    pygame.draw.circle(screen, self.black, (xAdjust, yAdjust),self.offset/2-4,4)
+
+  def drawPlayer(self):
+    if self.player.coord:
+      x,y = self.player.coord
+    else:
+      print "No coords for player"
+      return
+    pygame.draw.circle(screen, self.black, (x, y),self.offset/2-4)
 
   def drawWall(self, isHorizontal, x, y):
     """
@@ -117,6 +140,18 @@ class GameHandler:
     else:
       pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.none, self.height), self.thickness)
 
+class Player:
+  def __init__(self):
+    self.coord = None
+    self.viewRadius = 50
+    self.oilLevel = 100
+
+  def move(self,dir):
+    if coords == None:
+      return false
+
+  def setCoord(self, coord):
+    self.coord = coord
 
 if __name__ == "__main__":
   run()
