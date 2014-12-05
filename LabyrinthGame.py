@@ -38,11 +38,13 @@ class StateHandler:
     
     if self.mode == 'game':
       result = self.gameHandler.update(self.input)
-      if result == 'game over':
-        self.mode = 'menu'
-      elif result == 'next level':
+      if result == 'next level':
         self.gameHandler.setMaze(self.levelGenerator.nextLevel())
         self.gameHandler.drawMaze()
+      elif result == 'game over':
+        self.mode='menu'
+        self.menu=StartMenu()
+
 
     pygame.display.update()
 
@@ -262,7 +264,6 @@ class Player:
 
   def diminishOil(self):
     self.oilLevel = max(0,self.oilLevel - math.pow(self.viewRadius,1.5)*0.00001)
-    print self.oilLevel
 
   def increaseRadius(self):
     self.viewRadius = min(300,self.viewRadius+2)
