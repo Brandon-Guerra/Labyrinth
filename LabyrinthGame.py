@@ -42,10 +42,28 @@ class StateHandler:
 
 class StartMenu:
   def __init__(self):
-    pass
+    screen.fill((0, 0, 0))
+    header = pygame.font.SysFont("serif", 74)
+    subtext = pygame.font.SysFont("sansserif", 30)
+    titletext = header.render("Labyrinth", 1, (255, 255, 255))
+    instruction = subtext.render("press space bar to play", 1, (255, 255, 255))
+    description = "Use the arrow keys to move around. "
+    description += "Make your way out of the maze before you run out of oil."
+    destext = subtext.render(description, 1, (255, 255, 255))
+    titlepos = titletext.get_rect()
+    titlepos.centerx = screen.get_rect().centerx
+    titlepos.centery = screen.get_rect().centery - 60
+    instpos = instruction.get_rect()
+    instpos.centerx = screen.get_rect().centerx
+    instpos.centery = screen.get_rect().centery
+    despos = destext.get_rect()
+    despos.centerx = screen.get_rect().centerx
+    despos.centery = screen.get_rect().centery + 37
+    screen.blit(titletext, titlepos)
+    screen.blit(instruction, instpos)
+    screen.blit(destext, despos)
 
   def update(self, userInput):
-    screen.fill((135, 206, 250))
     if K_SPACE in userInput.unpressedKeys:
       return 'done'
 
