@@ -11,8 +11,8 @@ class LevelGenerator:
     Constructor
     """
     self.level = 0
-    self.width = 5
-    self.height = 5
+    self.width = 28
+    self.height = 30
     self.widthIncrement = 2
     self.heightIncrement = 2
     self.startIndex = None
@@ -68,7 +68,4 @@ class LevelGenerator:
     s = ""
     s += "level: %i\n" % self.level
     s += "width: %i\nheight: %i\n" %(self.width, self.height)
-    return s
-
-lg = LevelGenerator()
-lg.nextLevel()
+    return 
