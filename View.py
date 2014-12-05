@@ -21,10 +21,10 @@ class View:
     """
     # initialize north and west
     for i in maze.width:
-      if maze.cell[i][0].north:
+      if maze.cell[i,0].north:
         drawWall(True,i,0)
     for i in maze.height:
-      if maze.cell[0][j].west:
+      if maze.cell[0,j].west:
         drawWall(False,0,j)
     # loop through to draw the rest of the walls
     for i in maze.width:

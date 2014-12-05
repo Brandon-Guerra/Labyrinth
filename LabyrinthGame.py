@@ -4,7 +4,7 @@ from input import Input
 from LevelGenerator import LevelGenerator
 
 pygame.init()
-WINDOWWIDTH, WINDOWHIEGHT = (1200,800)
+WINDOWWIDTH, WINDOWHIEGHT = (1100,750)
 screen = pygame.display.set_mode((WINDOWWIDTH,WINDOWHIEGHT))
 FPSClock = pygame.time.Clock()
 
@@ -32,7 +32,7 @@ class StateHandler:
       isDone = self.menu.update(self.input)
       if isDone:
         self.mode = 'game'
-        self.gameHandler = GameHandler("none")
+        self.gameHandler = GameHandler(self.levelGenerator.nextLevel())
     
     if self.mode == 'game':
       result = self.gameHandler.update(self.input)
@@ -73,12 +73,49 @@ class StartMenu:
 class GameHandler:
   def __init__(self, maze):
     screen.fill((200,200,200))
+    self.black = (0, 0, 0)
+    self.thickness = 4
+    self.width = 34
+    self.height = 34
+    self.none = 0
+    self.offset = 30
+    self.constant = 34
+    self.drawMaze(maze)
     
   def update(self, userInput):
+
     if K_0 in userInput.unpressedKeys:
       return 'game over'
     if K_1 in userInput.unpressedKeys:
       return 'next level'
+  
+  def drawMaze(self, maze):
+    """
+    View a maze
+    """
+    # initialize north and west
+    for i in range(maze.width):
+      if maze.cell[i,0].north:
+        self.drawWall(True,i,0)
+    for i in range(maze.height):
+      if maze.cell[0,i].west:
+        self.drawWall(False,0,i)
+    # loop through to draw the rest of the walls
+    for i in range(maze.width):
+      for j in range(maze.height):
+        if maze.cell[i,j].south:
+          self.drawWall(True,i,j+1)
+        if maze.cell[i,j].east:
+          self.drawWall(False,i+1,j)
+
+  def drawWall(self, isHorizontal, x, y):
+    """
+    Draw wall for a cell
+    """
+    if isHorizontal:
+      pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.width, self.none), self.thickness)
+    else:
+      pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.none, self.height), self.thickness)
 
 
 if __name__ == "__main__":

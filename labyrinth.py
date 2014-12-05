@@ -12,8 +12,8 @@ def main():
 	#initializing constants for drawing maze
 	black = (0, 0, 0)
 	thickness = 4
-	width = 30
-	height = 30
+	width = 34
+	height = 34
 	none = 0
 	offset = 30
 	constant = 34
@@ -32,28 +32,28 @@ def main():
 	  View a maze
 	  """
 	  # initialize north and west
-		for i in maze.width:
-			if maze.cell[i][0].north:
+		for i in range(maze.width):
+			if maze.cell[i,0].north:
 				drawWall(True,i,0)
-		for i in maze.height:
-			if maze.cell[0][j].west:
-				drawWall(False,0,j)
+		for i in range(maze.height):
+			if maze.cell[0,i].west:
+				drawWall(False,0,i)
 	  # loop through to draw the rest of the walls
-		for i in maze.width:
-			for j in maze.height:
-				if maze.cell[i][j].south:
+		for i in range(maze.width):
+			for j in range(maze.height):
+				if maze.cell[i,j].south:
 					drawWall(True,i,j+1)
-				if maze.cell[i][j].east:
+				if maze.cell[i,j].east:
 					drawWall(False,i+1,j)
 
 	def drawWall(isHorizontal, x, y):
 		"""
 		Draw wall for a cell
 		"""
-		if isHorizantal:
+		if isHorizontal:
 			pygame.draw.rect(background, black, (x*constant + offset, y*constant + offset, width, none), thickness)
 		else:
-			pygame.draw.rect(background, black, (x*constant + offset, y*constant + offset, width, none), thickness)
+			pygame.draw.rect(background, black, (x*constant + offset, y*constant + offset, none, height), thickness)
 
 	l = LevelGenerator()
 	m = l.nextLevel()
