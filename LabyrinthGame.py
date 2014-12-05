@@ -6,8 +6,8 @@ from input import Input
 from LevelGenerator import LevelGenerator
 
 pygame.init()
-WINDOWWIDTH, WINDOWHIEGHT = (1100,750)
-screen = pygame.display.set_mode((WINDOWWIDTH,WINDOWHIEGHT))
+WINDOWWIDTH, WINDOWHEIGHT = (1100,750)
+screen = pygame.display.set_mode((WINDOWWIDTH,WINDOWHEIGHT))
 clock = pygame.time.Clock()
 
 def run():
@@ -79,6 +79,7 @@ class StartMenu:
 class GameHandler:
   def __init__(self, maze):
     self.black = (0, 0, 0)
+    self.yellow = (255,255,51)
     self.thickness = 4
     self.length = 34
     self.none = 0
@@ -145,6 +146,7 @@ class GameHandler:
     self.drawItem(self.finish)
     self.drawPlayer()
     self.drawDark(20)
+    self.drawOilLevel()
 
   def drawPlayer(self):
     if self.player:
@@ -160,10 +162,10 @@ class GameHandler:
     top = center[1] - self.player.viewRadius
     bottom = center[1] + self.player.viewRadius
 
-    pygame.draw.rect(screen, self.black, Rect(0,0,left,WINDOWHIEGHT))
-    pygame.draw.rect(screen, self.black, Rect(right,0,WINDOWWIDTH-right,WINDOWHIEGHT))
+    pygame.draw.rect(screen, self.black, Rect(0,0,left,WINDOWHEIGHT))
+    pygame.draw.rect(screen, self.black, Rect(right,0,WINDOWWIDTH-right,WINDOWHEIGHT))
     pygame.draw.rect(screen, self.black, Rect(left,0,right - left, top))
-    pygame.draw.rect(screen, self.black, Rect(left,bottom,right-left,WINDOWHIEGHT-bottom))
+    pygame.draw.rect(screen, self.black, Rect(left,bottom,right-left,WINDOWHEIGHT-bottom))
 
     points = range(n)
     points = map(lambda pt: pt/(len(points) - 1.0),points)
@@ -216,6 +218,12 @@ class GameHandler:
       self.walls.append(pygame.Rect(x*self.constant + self.offset, y*self.constant + self.offset, self.length, self.none))
     else:
       self.walls.append(pygame.Rect(x*self.constant + self.offset, y*self.constant + self.offset, self.none, self.length))
+
+  def drawOilLevel(self):
+    """
+    Drawing the current oil level
+    """
+    pygame.draw.rect(screen, self.yellow, (0, 740, 1100/200 * self.player.oilLevel, self.none), self.thickness)
 
 class Player:
   def __init__(self,coord):
