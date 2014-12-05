@@ -11,10 +11,10 @@ class LevelGenerator:
     Constructor
     """
     self.level = 0
-    self.width = 28
-    self.height = 30
-    self.widthIncrement = 2
-    self.heightIncrement = 2
+    self.width = 30
+    self.height = 20
+    self.widthIncrement = 0
+    self.heightIncrement = 0
     self.startIndex = None
     self.endIndex = None
     self.currentMaze = None
@@ -52,8 +52,8 @@ class LevelGenerator:
     # Set start and end index
     start = (random.randint(0,self.width-1),random.randint(0,self.height-1))
     end = (random.randint(0,self.width-1),random.randint(0,self.height-1))
-    maze.setContent("s", start)
-    maze.setContent("e", end)
+    maze.setContent("start",start)
+    maze.setContent("end", end)
     visitedCells.append(start)
     walls.extend(maze.getWalls(start))
     while walls:
@@ -68,4 +68,7 @@ class LevelGenerator:
     s = ""
     s += "level: %i\n" % self.level
     s += "width: %i\nheight: %i\n" %(self.width, self.height)
-    return 
+    return
+
+l = LevelGenerator()
+m = l.nextLevel()

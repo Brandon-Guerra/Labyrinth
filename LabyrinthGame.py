@@ -13,6 +13,7 @@ def run():
   while True:
     stateHandler.update()
 
+
 class StateHandler:
   def __init__(self):
     pygame.display.set_caption('Labyrinth')
@@ -39,6 +40,7 @@ class StateHandler:
         self.mode = 'menu'
         self.menu = StartMenu()
     pygame.display.update()
+
 
 class StartMenu:
   def __init__(self):
@@ -67,11 +69,11 @@ class StartMenu:
     if K_SPACE in userInput.unpressedKeys:
       return 'done'
 
+
 class GameHandler:
   def __init__(self, maze):
     screen.fill((200,200,200))
     
-
   def update(self, userInput):
     if K_0 in userInput.unpressedKeys:
       return 'game over'
