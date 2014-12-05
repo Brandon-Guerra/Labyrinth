@@ -1,0 +1,11 @@
+This log contains debugging and error messages from the last run.
+Traceback (most recent call last):
+  File "/Users/lukeoglesbee/Downloads/Juggleball 1.1/main.py", line 89, in <module>
+    from core import libengine
+  File "/Users/lukeoglesbee/Downloads/Juggleball 1.1/core/libengine.py", line 10, in <module>
+    import input, random, time, ui, sound
+  File "/Users/lukeoglesbee/Downloads/Juggleball 1.1/core/input.py", line 4, in <module>
+    import pygame, sys, outro
+  File "/Users/lukeoglesbee/Downloads/Juggleball 1.1/core/outro.py", line 3, in <module>
+    BIGFONT         = pygame.font.Font('fonts/roboto thin.ttf', 32)
+IOError: unable to read font filename

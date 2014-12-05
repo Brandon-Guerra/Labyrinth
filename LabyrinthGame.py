@@ -22,6 +22,7 @@ class StateHandler:
     self.input = Input()
     self.mode = 'menu'
     self.menu = StartMenu()
+    self.levelGenerator = LevelGenerator()
     FPSClock.tick(60)
 
   def update(self):
@@ -30,11 +31,13 @@ class StateHandler:
       isDone = self.menu.update(self.input)
       if isDone:
         self.mode = 'game'
-        self.gameHandler = GameHandler(self.input)
-    elif self.mode == 'game':
-      result = self.gameHandler.update()
+        self.gameHandler = GameHandler("none")
+    
+    if self.mode == 'game':
+      result = self.gameHandler.update(self.input)
       if result == 'game over':
-        self.mode = 'menu'     
+        self.mode = 'menu'
+        self.menu = StartMenu()
     pygame.display.update()
 
 class StartMenu:
@@ -65,18 +68,15 @@ class StartMenu:
       return 'done'
 
 class GameHandler:
-  def __init__(self, userInput):
-    self.input = userInput
+  def __init__(self, maze):
+    screen.fill((200,200,200))
+    
 
-  def update(self):
-    screen.fill((0,0,0))
-
-class LevelMenu:
-  def __init__(self):
-    pass
-
-  def update(self):
-    pass
+  def update(self, userInput):
+    if K_0 in userInput.unpressedKeys:
+      return 'game over'
+    if K_1 in userInput.unpressedKeys:
+      return 'next level'
 
 
 if __name__ == "__main__":
