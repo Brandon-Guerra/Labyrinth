@@ -7,7 +7,13 @@ class View:
     """
     Constructor
     """
-    pass
+    self.black = (0, 0, 0)
+    self.thickness = 4
+    self.width = 30
+    self.height = 30
+    self.none = 0
+    self.offset = 30
+    self.constant = 34
 
   def drawMaze(maze):
     """
@@ -28,8 +34,11 @@ class View:
         if maze.cell[i][j].east:
           drawWall(False,i+1,j)
 
-  def drawWall(isHorizantal, x, y):
+  def drawWall(isHorizontal, x, y):
     """
     Draw wall for a cell
     """
-    pass
+    if isHorizantal:
+      pygame.draw.rect(background, black, (x*constant + offset, y*constant + offset, width, none), thickness)
+    else:
+      pygame.draw.rect(background, black, (x*constant + offset, y*constant + offset, width, none), thickness)
