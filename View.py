@@ -27,7 +27,7 @@ class View:
       if maze.cell[0][j].west:
         drawWall(False,0,j)
     # loop through to draw the rest of the walls
-    for i maze.width:
+    for i in maze.width:
       for j in maze.height:
         if maze.cell[i][j].south:
           drawWall(True,i,j+1)
