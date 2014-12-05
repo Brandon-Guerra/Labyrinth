@@ -56,7 +56,7 @@ class Maze:
     y = coord[1]
     self.cell[x][y].content = content
 
-  def string(self):
+  def __str__(self):
     """
     To string
     """
@@ -76,38 +76,38 @@ class Maze:
       out += "\n"
     return out
 
-  def __str__(self):
-    out = ""
-    # walls = []
-    # for i in range(self.width):
-    #   for j in range(self.height):
-    #     walls.extend(self.getWalls((i,j)))
-    for i in self.cell:
-      for j in i:
-        if j.south == True:
-          out += "SSS"
-        else:
-          out += "___"
-      out += "\n"
-      for j in i:
-        if j.west == True:
-          out += "W"
-        else:
-          out += "_"
-        out += j.content
-        if j.east == True:
-          out += "E"
-        else:
-          out += "_"
-      out += "\n"
-      for j in i:
-        if j.north == True:
-          out += "NNN"
-        else:
-          out += "___"
-      out += "\n"
+  # def __str__(self):
+  #   out = ""
+  #   # walls = []
+  #   # for i in range(self.width):
+  #   #   for j in range(self.height):
+  #   #     walls.extend(self.getWalls((i,j)))
+  #   for i in self.cell:
+  #     for j in i:
+  #       if j.south == True:
+  #         out += "SSS"
+  #       else:
+  #         out += "___"
+  #     out += "\n"
+  #     for j in i:
+  #       if j.west == True:
+  #         out += "W"
+  #       else:
+  #         out += "_"
+  #       out += j.content
+  #       if j.east == True:
+  #         out += "E"
+  #       else:
+  #         out += "_"
+  #     out += "\n"
+  #     for j in i:
+  #       if j.north == True:
+  #         out += "NNN"
+  #       else:
+  #         out += "___"
+  #     out += "\n"
 
-    return out
+  #   return out
 
   def getWalls(self, coords):
     """
