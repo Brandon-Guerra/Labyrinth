@@ -147,13 +147,11 @@ class GameHandler:
     right = self.player.rect.x + self.player.viewRadius
     top = self.player.rect.y - self.player.viewRadius
     bottom = self.player.rect.y + self.player.viewRadius
-    width = 1100
-    height = 750
 
     pygame.draw.rect(screen, self.black, (0, 0, left, height))
-    pygame.draw.rect(screen, self.black, (right, 0, width - right, height))
+    pygame.draw.rect(screen, self.black, (right, 0, WINDOWWIDTH - right, WINDOWHIEGHT))
     pygame.draw.rect(screen, self.black, (left, 0, right - left, top))
-    pygame.draw.rect(screen, self.black, (left, bottom, right - left, height - bottom))
+    pygame.draw.rect(screen, self.black, (left, bottom, right - left, WINDOWHIEGHT - bottom))
 
     points = range(250)
 
