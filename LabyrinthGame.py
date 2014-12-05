@@ -106,10 +106,13 @@ class GameHandler:
     elif K_s in userInput.unpressedKeys or K_s in userInput.pressedKeys:
       self.movePlayer(0,2)
     if K_EQUALS in userInput.unpressedKeys or K_EQUALS in userInput.pressedKeys:
-      self.player.viewRadius += 2
+      self.player.increaseRadius()
     elif K_MINUS in userInput.unpressedKeys or K_MINUS in userInput.pressedKeys:
-      self.player.viewRadius -= 2
+      self.player.decreaseRadius()
+    self.player.diminishOil()
+    print self.player.oilLevel
     if self.player.rect.colliderect(self.finish):
+      self.player.addOil()
       return 'next level'
 
     self.drawMaze()
@@ -217,7 +220,7 @@ class GameHandler:
     """
     Drawing the current oil level
     """
-    pygame.draw.rect(screen, self.yellow, (0, 740, 1100/200 * self.player.oilLevel, self.none), self.thickness)
+    pygame.draw.rect(screen, self.yellow, (0, 740, WINDOWWIDTH/200 * self.player.oilLevel, self.none), self.thickness)
 
 class Finish:
   def __init__(self,coord):
@@ -253,6 +256,18 @@ class Player:
   def draw(self):
     img = pygame.Rect(self.rect.x-5,self.rect.y-5,20,20)
     pygame.draw.rect(screen, self.color, img)
+
+  def addOil(self):
+    self.oilLevel = min(200,self.oilLevel+50)
+
+  def diminishOil(self):
+    self.oilLevel = max(0,self.oilLevel - self.oilLevel*math.pow(self.viewRadius,1.5)*0.00000015)
+
+  def increaseRadius(self):
+    self.viewRadius = min(300,self.viewRadius+2)
+
+  def decreaseRadius(self):
+    self.viewRadius = max(50,self.viewRadius-2)
 
 if __name__ == "__main__":
   run()
