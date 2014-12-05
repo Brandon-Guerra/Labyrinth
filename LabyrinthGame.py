@@ -87,10 +87,8 @@ class GameHandler:
     self.constant = 34
     self.walls = []
     self.start = maze.start
-    self.finish = maze.finish
-    x = maze.start[0]*self.constant + self.offset + 7
-    y = maze.start[1]*self.constant + self.offset + 7
-    self.player = Player((x,y))
+    self.finish = Finish(maze.finish)
+    self.player = Player(maze.start)
     self.setMaze(maze)
     self.drawMaze()
     
@@ -111,6 +109,9 @@ class GameHandler:
       self.player.viewRadius += 2
     elif K_MINUS in userInput.unpressedKeys or K_MINUS in userInput.pressedKeys:
       self.player.viewRadius -= 2
+    if self.player.rect.colliderect(self.finish):
+      return 'next level'
+
     self.drawMaze()
     return 'continue'
   
@@ -118,8 +119,7 @@ class GameHandler:
     """
     View a maze
     """
-    self.finish = maze.finish
-    self.start = maze.start
+    self.finish = Finish(maze.finish)
     self.walls = []
     screen.fill((200,200,200))
     # initialize north and west
@@ -136,22 +136,17 @@ class GameHandler:
           self.addWall(True,i,j+1)
         if maze.cell[i,j].east:
           self.addWall(False,i+1,j)
-    self.drawPlayer()
+    self.player.draw()
     self.drawItem(maze.finish)
 
   def drawMaze(self):
     screen.fill((200,200,200))
     for wall in self.walls:
       pygame.draw.rect(screen, self.black, wall, self.thickness)
-    self.drawItem(self.finish)
-    self.drawPlayer()
+    self.player.draw()
+    self.finish.draw()
     self.drawDark(20)
     self.drawOilLevel()
-
-  def drawPlayer(self):
-    if self.player:
-      pygame.draw.rect(screen, self.black, self.player.rect)
-      # pygame.draw.circle(screen, self.black, (self.player.rect.x, self.player.rect.y), 1000, 800)
 
   def drawDark(self,n):
     center = []
@@ -192,7 +187,6 @@ class GameHandler:
   def moveSingleAxis(self, dx, dy):
     self.player.rect.x += dx
     self.player.rect.y += dy
-
     for wall in self.walls:
       if self.player.rect.colliderect(wall):
         if dx > 0:
@@ -225,12 +219,40 @@ class GameHandler:
     """
     pygame.draw.rect(screen, self.yellow, (0, 740, 1100/200 * self.player.oilLevel, self.none), self.thickness)
 
+class Finish:
+  def __init__(self,coord):
+    self.color = (0,0,0)
+    self.constant = 34
+    self.offset = 30
+    x = coord[0]*self.constant + self.offset + 7
+    y = coord[1]*self.constant + self.offset + 7
+    self.rect = pygame.Rect(x,y,20,20)
+
+  def setCoord(self, coord):
+    self.rect.x = coord[0]*self.constant + self.offset + 7
+    self.rect.y = coord[1]*self.constant + self.offset + 7
+
+  def draw(self):
+    left = self.rect.x+2
+    right = self.rect.x+self.rect.width-3
+    middle = (self.rect.x+self.rect.width/2,self.rect.y+self.rect.height/2+3)
+    pygame.draw.circle(screen, self.color, middle, 8)
+    pygame.draw.polygon(screen, self.color, ((left,middle[1]),(right,middle[1]),(middle[0],middle[1]-14)))
+
 class Player:
   def __init__(self,coord):
     self.viewRadius = 100
     self.oilLevel = 100
-    x,y = coord
-    self.rect = pygame.Rect(x,y,20,20)
+    self.color = (0,0,0)
+    self.constant = 34
+    self.offset = 30
+    x = coord[0]*self.constant + self.offset + 12
+    y = coord[1]*self.constant + self.offset + 12
+    self.rect = pygame.Rect(x,y,10,10)
+
+  def draw(self):
+    img = pygame.Rect(self.rect.x-5,self.rect.y-5,20,20)
+    pygame.draw.rect(screen, self.color, img)
 
 if __name__ == "__main__":
   run()

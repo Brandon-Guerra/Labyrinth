@@ -66,58 +66,7 @@ class Maze:
     x,y = coord
     self.cell[x,y].content = "finish"
 
-  def __str__(self):
-    """
-    To string
-    """
-    out  = "\n" + " "*4 + "MAZE -- width: %s, heigth: %s\n\n" % (self.width, self.height)
-    out += " "*4
-    for i in range(self.width):
-      out += "%3s"%i
-    out += "\n"+" "*4
-    out += "-"*(self.width*3)
-    out += "\n"
-    row = 0
-    for x in self.cell:
-      out += "%2s |"%row
-      row += 1
-      for y in x:
-        out += "%3s" % y
-      out += "\n"
-    return out
-
-  # def __str__(self):
-  #   out = ""
-  #   # walls = []
-  #   # for i in range(self.width):
-  #   #   for j in range(self.height):
-  #   #     walls.extend(self.getWalls((i,j)))
-  #   for i in self.cell:
-  #     for j in i:
-  #       if j.south == True:
-  #         out += "SSS"
-  #       else:
-  #         out += "___"
-  #     out += "\n"
-  #     for j in i:
-  #       if j.west == True:
-  #         out += "W"
-  #       else:
-  #         out += "_"
-  #       out += j.content
-  #       if j.east == True:
-  #         out += "E"
-  #       else:
-  #         out += "_"
-  #     out += "\n"
-  #     for j in i:
-  #       if j.north == True:
-  #         out += "NNN"
-  #       else:
-  #         out += "___"
-  #     out += "\n"
-
-  #   return out
+  
 
   def getWalls(self, coords):
     """
@@ -138,24 +87,6 @@ class Maze:
     if c.west:
       walls.append(((x,y),(x-1,y)))
     return walls
-
-  # def getWalls(self, x, y):
-  #   """
-  #   Get walls
-  #   """
-  #   if not self.isValidIndex(x,y):
-  #     return False
-  #   c = self.cell[x][y]
-  #   walls = []
-  #   if c.north:
-  #     walls.append(((x,y),(x,y+1)))
-  #   if c.south:
-  #     walls.append(((x,y),(x,y-1)))
-  #   if c.east:
-  #     walls.append(((x,y),(x+1,y)))
-  #   if c.west:
-  #     walls.append(((x,y),(x-1,y)))
-  #   return walls
 
   def isValidIndex(self, x, y):
     """
