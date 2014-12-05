@@ -56,10 +56,11 @@ class StartMenu:
     subtext = pygame.font.SysFont("fonts/RussoOne-Regular.ttf", 30)
     titletext = header.render("Labyrinth", 1, (255, 255, 255))
     instruction = subtext.render("press space bar to play or 'esc' to exit", 1, (255, 255, 255))
-    description = "Stay in the maze for as long as you can by collection oil. "
-    description += 'Move with "w", "a", "s", "d" and increase/decrease your field of view '
-    description += 'with the "+"" and "-" keys. Good luck!' 
+    description = "Stay in the maze for as long as you can by collecting oil. "
+    extra = 'Move with "w", "a", "s", "d" and increase/decrease your field of view '
+    extra += 'with the "+"" and "-" keys. Good luck!' 
     destext = subtext.render(description, 1, (255, 255, 255))
+    extratext = subtext.render(extra, 1, (255,255,255))
     titlepos = titletext.get_rect()
     titlepos.centerx = screen.get_rect().centerx
     titlepos.centery = screen.get_rect().centery - 60
@@ -69,9 +70,13 @@ class StartMenu:
     despos = destext.get_rect()
     despos.centerx = screen.get_rect().centerx
     despos.centery = screen.get_rect().centery + 37
+    extrapos = extratext.get_rect()
+    extrapos.centerx = screen.get_rect().centerx
+    extrapos.centery = screen.get_rect().centery + 72
     screen.blit(titletext, titlepos)
     screen.blit(instruction, instpos)
     screen.blit(destext, despos)
+    screen.blit(extratext, extrapos)
 
   def update(self, userInput):
     if K_SPACE in userInput.unpressedKeys:
