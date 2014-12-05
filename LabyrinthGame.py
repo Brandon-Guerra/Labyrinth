@@ -39,8 +39,7 @@ class StateHandler:
     if self.mode == 'game':
       result = self.gameHandler.update(self.input)
       if result == 'game over':
-        program.quit()
-        sys.exit()
+        self.mode = 'menu'
       elif result == 'next level':
         self.gameHandler.setMaze(self.levelGenerator.nextLevel())
         self.gameHandler.drawMaze()
@@ -54,9 +53,10 @@ class StartMenu:
     header = pygame.font.Font("fonts/RussoOne-Regular.ttf", 74)
     subtext = pygame.font.SysFont("fonts/RussoOne-Regular.ttf", 30)
     titletext = header.render("Labyrinth", 1, (255, 255, 255))
-    instruction = subtext.render("press space bar to play", 1, (255, 255, 255))
-    description = "Use the arrow keys to move around. "
-    description += "Make your way out of the maze before you run out of oil."
+    instruction = subtext.render("press space bar to play or 'esc' to exit", 1, (255, 255, 255))
+    description = "Stay in the maze for as long as you can by collection oil. "
+    description += 'Move with "w", "a", "s", "d" and increase/decrease your field of view '
+    description += 'with the "+"" and "-" keys. Good luck!' 
     destext = subtext.render(description, 1, (255, 255, 255))
     titlepos = titletext.get_rect()
     titlepos.centerx = screen.get_rect().centerx
@@ -74,7 +74,6 @@ class StartMenu:
   def update(self, userInput):
     if K_SPACE in userInput.unpressedKeys:
       return 'done'
-
 
 class GameHandler:
   def __init__(self, maze):
