@@ -24,7 +24,7 @@ class StateHandler:
     self.mode = 'menu'
     self.menu = StartMenu()
     self.levelGenerator = LevelGenerator()
-    clock.tick(60)
+    clock.tick(90)
 
   def update(self):
     self.input.get() #check for quit
@@ -40,7 +40,8 @@ class StateHandler:
         self.mode = 'menu'
         self.menu = StartMenu()
       elif result == 'next level':
-        self.gameHandler.drawMaze(self.levelGenerator.nextLevel())
+        self.gameHandler.setMaze(self.levelGenerator.nextLevel())
+        self.gameHandler.drawMaze()
 
     pygame.display.update()
 
@@ -75,46 +76,93 @@ class StartMenu:
 
 class GameHandler:
   def __init__(self, maze):
-    screen.fill((200,200,200))
     self.black = (0, 0, 0)
     self.thickness = 4
     self.length = 34
     self.none = 0
     self.offset = 30
     self.constant = 34
-    self.player = Player()
-    self.drawMaze(maze)
+    self.walls = []
+    self.start = maze.start
+    self.finish = maze.finish
+    x = maze.start[0]*self.constant + self.offset + 7
+    y = maze.start[1]*self.constant + self.offset + 7
+    self.player = Player((x,y))
+    self.setMaze(maze)
+    self.drawMaze()
     
   def update(self, userInput):
     if K_0 in userInput.unpressedKeys:
       return 'game over'
     if K_1 in userInput.unpressedKeys:
       return 'next level'
+    if K_a in userInput.unpressedKeys or K_a in userInput.pressedKeys:
+      self.movePlayer(-2,0)
+    elif K_d in userInput.unpressedKeys or K_d in userInput.pressedKeys:
+      self.movePlayer(2,0)
+    elif K_w in userInput.unpressedKeys or K_w in userInput.pressedKeys:
+      self.movePlayer(0,-2)
+    elif K_s in userInput.unpressedKeys or K_s in userInput.pressedKeys:
+      self.movePlayer(0,2)
+    self.drawMaze()
+    return 'continue'
   
-  def drawMaze(self, maze):
+  def drawMaze(self):
+    screen.fill((200,200,200))
+    for wall in self.walls:
+      pygame.draw.rect(screen, self.black, wall, self.thickness)
+    self.drawPlayer()
+    self.drawItem(self.finish)
+
+  def setMaze(self, maze):
     """
     View a maze
     """
+    self.finish = maze.finish
+    self.start = maze.start
+    self.walls = []
     screen.fill((200,200,200))
     # initialize north and west
     for i in range(maze.width):
       if maze.cell[i,0].north:
-        self.drawWall(True,i,0)
+        self.addWall(True,i,0)
     for i in range(maze.height):
       if maze.cell[0,i].west:
-        self.drawWall(False,0,i)
+        self.addWall(False,0,i)
     # loop through to draw the rest of the walls
     for i in range(maze.width):
       for j in range(maze.height):
         if maze.cell[i,j].south:
-          self.drawWall(True,i,j+1)
+          self.addWall(True,i,j+1)
         if maze.cell[i,j].east:
-          self.drawWall(False,i+1,j)
-    x = maze.start[0]*self.constant+self.offset+self.offset/2+3
-    y = maze.start[1]*self.constant+self.offset+self.offset/2+3
-    self.player.setCoord((x,y))
+          self.addWall(False,i+1,j)
     self.drawPlayer()
     self.drawItem(maze.finish)
+
+  def drawPlayer(self):
+    if self.player:
+      pygame.draw.rect(screen, self.black, self.player.rect)
+
+  def movePlayer(self, dx, dy):
+    if dx != 0:
+      self.moveSingleAxis(dx, 0)
+    if dy != 0:
+      self.moveSingleAxis(0, dy)
+
+  def moveSingleAxis(self, dx, dy):
+    self.player.rect.x += dx
+    self.player.rect.y += dy
+
+    for wall in self.walls:
+      if self.player.rect.colliderect(wall):
+        if dx > 0:
+          self.player.rect.right = wall.left-3
+        if dx < 0:
+          self.player.rect.left = wall.right+3
+        if dy > 0:
+          self.player.rect.bottom = wall.top-3
+        if dy < 0:
+          self.player.rect.top = wall.bottom+3
 
   def drawItem(self, coord, type=None):
     x,y = coord
@@ -122,35 +170,21 @@ class GameHandler:
     yAdjust = y*self.constant+self.offset+self.offset/2+3
     pygame.draw.circle(screen, self.black, (xAdjust, yAdjust),self.offset/2-4,4)
 
-  def drawPlayer(self):
-    if self.player.coord:
-      x,y = self.player.coord
-    else:
-      print "No coords for player"
-      return
-    pygame.draw.circle(screen, self.black, (x, y),self.offset/2-4)
-
-  def drawWall(self, isHorizontal, x, y):
+  def addWall(self, isHorizontal, x, y):
     """
     Draw wall for a cell
     """
     if isHorizontal:
-      pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.length, self.none), self.thickness)
+      self.walls.append(pygame.Rect(x*self.constant + self.offset, y*self.constant + self.offset, self.length, self.none))
     else:
-      pygame.draw.rect(screen, self.black, (x*self.constant + self.offset, y*self.constant + self.offset, self.none, self.length), self.thickness)
+      self.walls.append(pygame.Rect(x*self.constant + self.offset, y*self.constant + self.offset, self.none, self.length))
 
 class Player:
-  def __init__(self):
-    self.coord = None
+  def __init__(self,coord):
     self.viewRadius = 50
     self.oilLevel = 100
-
-  def move(self,dir):
-    if coords == None:
-      return false
-
-  def setCoord(self, coord):
-    self.coord = coord
+    x,y = coord
+    self.rect = pygame.Rect(x,y,20,20)
 
 if __name__ == "__main__":
   run()
