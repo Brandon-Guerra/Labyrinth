@@ -120,9 +120,9 @@ class Maze:
     c = self.cell[x][y]
     walls = []
     if c.north:
-      walls.append(((x,y),(x,y+1)))
-    if c.south:
       walls.append(((x,y),(x,y-1)))
+    if c.south:
+      walls.append(((x,y),(x,y+1)))
     if c.east:
       walls.append(((x,y),(x+1,y)))
     if c.west:
@@ -175,20 +175,20 @@ class Maze:
       self.cell[bIndex[0]][bIndex[1]].west = isBuild
       self.cell[aIndex[0]][aIndex[1]].east = isBuild
     elif yDif == 1 and xDif == 0:
-      self.cell[aIndex[0]][aIndex[1]].south = isBuild
-      self.cell[bIndex[0]][bIndex[1]].north = isBuild
-    elif yDif == -1 and xDif == 0:
-      self.cell[bIndex[0]][bIndex[1]].south = isBuild
       self.cell[aIndex[0]][aIndex[1]].north = isBuild
+      self.cell[bIndex[0]][bIndex[1]].south = isBuild
+    elif yDif == -1 and xDif == 0:
+      self.cell[bIndex[0]][bIndex[1]].north = isBuild
+      self.cell[aIndex[0]][aIndex[1]].south = isBuild
     else:
       return False
     if True:
       a = self.cell[aIndex[0]][aIndex[1]]
       b = self.cell[bIndex[0]][bIndex[1]]
-      # print "-- a (%s,%s)--" % (aIndex[0],aIndex[1])
-      # print "N: %s\nS: %s\nE: %s\nW: %s\n" % (a.north, a.south, a.east, a.west)
-      # print "-- b (%s,%s)--" % (bIndex[0],bIndex[1])
-      # print "N: %s\nS: %s\nE: %s\nW: %s\n" % (b.north, b.south, b.east, b.west)
+      print "-- a (%s,%s)--" % (aIndex[0],aIndex[1])
+      print "N: %s\nS: %s\nE: %s\nW: %s\n" % (a.north, a.south, a.east, a.west)
+      print "-- b (%s,%s)--" % (bIndex[0],bIndex[1])
+      print "N: %s\nS: %s\nE: %s\nW: %s\n" % (b.north, b.south, b.east, b.west)
     return True
 
 
