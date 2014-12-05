@@ -1,3 +1,4 @@
+import math
 import pygame
 from pygame.locals import *
 from input import Input
@@ -142,7 +143,36 @@ class GameHandler:
   def drawPlayer(self):
     if self.player:
       pygame.draw.rect(screen, self.black, self.player.rect)
-      pygame.draw.circle(screen, self.black, (self.player.rect.x, self.player.rect.y), 1000, 800)
+    left = self.player.rect.x - self.player.viewRadius
+    right = self.player.rect.x + self.player.viewRadius
+    top = self.player.rect.y - self.player.viewRadius
+    bottom = self.player.rect.y + self.player.viewRadius
+    width = 1100
+    height = 750
+
+    pygame.draw.rect(screen, self.black, (0, 0, left, height))
+    pygame.draw.rect(screen, self.black, (right, 0, width - right, height))
+    pygame.draw.rect(screen, self.black, (left, 0, right - left, top))
+    pygame.draw.rect(screen, self.black, (left, bottom, right - left, height - bottom))
+
+    points = range(250)
+
+    points = map(lambda pt: pt / (len(points) - 1.0), points)
+    points = map(lambda pt: pt * 3.1415926535 * 2 / 4, points)
+    points = map(lambda pt: (math.cos(pt), math.sin(pt)), points) 
+    points = map(lambda pt: (self.player.viewRadius * pt[0], self.player.viewRadius * pt[1]), points)
+
+    for quadrant in ((1, 1), (-1, 1), (-1, -1), (1, -1)): 
+      x_flip = quadrant[0]
+      y_flip = quadrant[1]
+      edge = self.player.rect.y + self.player.viewRadius * y_flip
+      for i in xrange(len(points) - 1):
+        A = (points[i][0] * x_flip + self.player.rect.x, points[i][1] * y_flip + self.player.rect.y)
+        B = (points[i + 1][0] * x_flip + self.player.rect.x, points[i + 1][1] * y_flip + self.player.rect.y)
+        A_edge = (A[0], edge)
+        B_edge = (B[0], edge)
+      
+        pygame.draw.polygon(screen, self.black, (A, B, B_edge, A_edge))
 
   def movePlayer(self, dx, dy):
     if dx != 0:
