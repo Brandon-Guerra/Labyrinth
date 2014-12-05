@@ -185,10 +185,10 @@ class Maze:
     if True:
       a = self.cell[aIndex[0]][aIndex[1]]
       b = self.cell[bIndex[0]][bIndex[1]]
-      print "-- a (%s,%s)--" % (aIndex[0],aIndex[1])
-      print "N: %s\nS: %s\nE: %s\nW: %s\n" % (a.north, a.south, a.east, a.west)
-      print "-- b (%s,%s)--" % (bIndex[0],bIndex[1])
-      print "N: %s\nS: %s\nE: %s\nW: %s\n" % (b.north, b.south, b.east, b.west)
+      # print "-- a (%s,%s)--" % (aIndex[0],aIndex[1])
+      # print "N: %s\nS: %s\nE: %s\nW: %s\n" % (a.north, a.south, a.east, a.west)
+      # print "-- b (%s,%s)--" % (bIndex[0],bIndex[1])
+      # print "N: %s\nS: %s\nE: %s\nW: %s\n" % (b.north, b.south, b.east, b.west)
     return True
 
 

@@ -62,7 +62,6 @@ class LevelGenerator:
         maze.destroyWall(w[0],w[1])
         visitedCells.append(w[1])
         walls.extend(maze.getWalls(w[1]))
-    print maze
     return maze
 
   def __str__(self):
