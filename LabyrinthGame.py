@@ -45,8 +45,8 @@ class StateHandler:
 class StartMenu:
   def __init__(self):
     screen.fill((0, 0, 0))
-    header = pygame.font.SysFont("serif", 74)
-    subtext = pygame.font.SysFont("sansserif", 30)
+    header = pygame.font.Font("fonts/RussoOne-Regular.ttf", 74)
+    subtext = pygame.font.SysFont("fonts/RussoOne-Regular.ttf", 30)
     titletext = header.render("Labyrinth", 1, (255, 255, 255))
     instruction = subtext.render("press space bar to play", 1, (255, 255, 255))
     description = "Use the arrow keys to move around. "
